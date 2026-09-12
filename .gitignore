@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Builds
+dist/
+build/
+*.tsbuildinfo
+
+# Env
+.env
+.env.local
+.env.production
+
+# Uploads
+uploads/
+ai-service/uploads/
+
+# Logs
+npm-debug.log*
+yarn-error.log*
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/

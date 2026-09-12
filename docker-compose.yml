@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: exam-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+  ai-service:
+  build: ./ai-service
+  container_name: exam-ai
+  restart: unless-stopped
+  environment:
+    - GEMINI_API_KEY=${GEMINI_API_KEY}
+    - GEMINI_MODEL=${GEMINI_MODEL}
+  ports:
+    - "8000:8000"
+
+  server:
+    build: ./server
+    container_name: exam-server
+    restart: unless-stopped
+    depends_on:
+      - mongo
+      - ai-service
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/exam_system
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRES_IN=${JWT_EXPIRES_IN}
+      - PORT=5000
+      - CLIENT_URL=${CLIENT_URL}
+      - AI_SERVICE_URL=http://ai-service:8000
+    ports:
+      - "5000:5000"
+
+  client:
+    build:
+      context: ./client
+      args:
+        VITE_API_URL: http://localhost:5000/api
+    container_name: exam-client
+    restart: unless-stopped
+    depends_on:
+      - server
+    ports:
+      - "5173:80"
+
+volumes:
+  mongo-data:
