@@ -1,30 +1,41 @@
-# Render Blueprint (Backend + AI Service)
 services:
   - type: web
     name: exam-ai-service
     runtime: python
+    rootDir: ai-service
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
-    rootDir: ai-service
     envVars:
-  - key: GEMINI_API_KEY
-    sync: false
-  - key: GEMINI_MODEL
-    value: gemini-3.6-flash
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash
 
   - type: web
     name: exam-server
-    env: node
+    runtime: node
+    rootDir: server
     buildCommand: npm install
     startCommand: npm start
-    rootDir: server
     healthCheckPath: /api/health
     envVars:
       - key: MONGODB_URI
         sync: false
       - key: JWT_SECRET
         sync: false
-      - key: AI_SERVICE_URL
-        value: https://exam-ai-service.onrender.com
+      - key: GEMINI_API_KEY
+        sync: false
       - key: CLIENT_URL
-        value: https://exam-client.vercel.app
+        sync: false
+      - key: AI_SERVICE_URL
+        sync: false
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: EMAIL_FROM
+        sync: false

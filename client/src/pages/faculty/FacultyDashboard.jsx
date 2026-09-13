@@ -13,7 +13,7 @@ export default function FacultyDashboard() {
       try {
         const res = await api.get('/admin/stats');
         setStats(res.data.stats);
-      } catch {}
+      } catch { }
     };
     load();
   }, []);
@@ -49,10 +49,27 @@ export default function FacultyDashboard() {
         <div className="card">
           <div className="card-body">
             <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Quick Actions</h2>
-            <div className="space-y-3">
-              <Link to="/faculty/questions" className="btn-primary w-full text-center">Manage Question Bank</Link>
-              <Link to="/faculty/exams" className="btn-outline w-full text-center">Create New Exam</Link>
-              <Link to="/faculty/analytics" className="btn-outline w-full text-center">View Analytics</Link>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/faculty/questions"
+                className="btn-primary w-full block text-center"
+              >
+                Manage Question Bank
+              </Link>
+
+              <Link
+                to="/faculty/exams"
+                className="btn-outline w-full block text-center"
+              >
+                Create New Exam
+              </Link>
+
+              <Link
+                to="/faculty/analytics"
+                className="btn-outline w-full block text-center"
+              >
+                View Analytics
+              </Link>
             </div>
           </div>
         </div>
