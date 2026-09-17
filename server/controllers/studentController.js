@@ -413,9 +413,24 @@ function buildQuestions(questions, settings) {
 
 function evaluateAnswer(question, answer) {
   if (question.type === "mcq" || question.type === "true_false") {
-    return answer.selectedIndex === question.correctIndex ? question.marks : 0;
+    // Compare the actual selected option text.
+    // This works even when options are randomized.
+    const correctOption = question.options?.[question.correctIndex];
+
+    if (
+      answer.selectedOption !== undefined &&
+      answer.selectedOption !== null
+    ) {
+      return answer.selectedOption === correctOption ? question.marks : 0;
+    }
+
+    // Fallback for older answers that only contain selectedIndex
+    return answer.selectedIndex === question.correctIndex
+      ? question.marks
+      : 0;
   }
-  // Subjective - handled by AI service; return 0 for now, AI will override
+
+  // Subjective answers will be evaluated separately by AI service.
   return 0;
 }
 
