@@ -64,7 +64,7 @@ const joinExam = async (req, res, next) => {
 const startExam = async (req, res, next) => {
   try {
     const { examId } = req.params;
-    const exam = await Exam.findById(examId).populate("questionIds");
+    const exam = await Exam.findById(examId);
     if (!exam) return res.status(404).json({ message: "Exam not found" });
     if (!exam.isPublished) return res.status(400).json({ message: "Exam not published" });
 
@@ -214,7 +214,7 @@ const submitExam = async (req, res, next) => {
       }
     }
 
-attempt.score = score;
+    attempt.score = score;
     attempt.totalMarks = totalMarks;
     attempt.percentage = totalMarks ? (score / totalMarks) * 100 : 0;
     // Pass if percentage >= passMarks (passMarks is a percentage value, default 33)
@@ -427,7 +427,7 @@ module.exports = {
   saveProgress,
   submitExam,
   autoSubmit,
-reportProctoringEvent,
+  reportProctoringEvent,
   getExamDetails,
   getAdaptiveNext,
   getMyResults,
