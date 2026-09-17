@@ -223,17 +223,23 @@ const submitExam = async (req, res, next) => {
     attempt.status = mode === "auto" ? "auto-submitted" : "submitted";
 
     // AI feedback for automatically evaluated subjective answers + overall
-    if (attempt.exam.aiFeedback) {
+    // AI feedback for automatically evaluated subjective answers + overall
+    if (attempt.exam.settings?.aiFeedback) {
       try {
-        const aiRes = await axios.post(`${process.env.AI_SERVICE_URL || "http://localhost:8000"}/feedback/exam`, {
-          score,
-          totalMarks,
-          percentage: attempt.percentage,
-          answers: attempt.answers,
-          questions,
-        });
+        const aiRes = await axios.post(
+          `${process.env.AI_SERVICE_URL || "http://localhost:8000"}/feedback/exam`,
+          {
+            score,
+            totalMarks,
+            percentage: attempt.percentage,
+            answers: attempt.answers,
+            questions,
+          }
+        );
+
         attempt.aiFeedback = aiRes.data.feedback;
       } catch (e) {
+        console.error("AI feedback failed:", e.message);
         attempt.aiFeedback = "AI feedback unavailable.";
       }
     }
