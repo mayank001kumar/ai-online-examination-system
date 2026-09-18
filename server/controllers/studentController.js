@@ -239,7 +239,11 @@ const submitExam = async (req, res, next) => {
 
         attempt.aiFeedback = aiRes.data.feedback;
       } catch (e) {
-        console.error("AI feedback failed:", e.message);
+        console.error(
+          "[AI Feedback] Error:",
+          e.response?.status,
+          e.response?.data || e.message
+        );
         attempt.aiFeedback = "AI feedback unavailable.";
       }
     }
