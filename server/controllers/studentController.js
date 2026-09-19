@@ -223,8 +223,7 @@ const submitExam = async (req, res, next) => {
     attempt.status = mode === "auto" ? "auto-submitted" : "submitted";
 
     // AI feedback for automatically evaluated subjective answers + overall
-    // AI feedback for automatically evaluated subjective answers + overall
-    if (attempt.exam.settings?.aiFeedback) {
+    if (attempt.exam.aiFeedback) {
       try {
         const aiRes = await axios.post(
           `${process.env.AI_SERVICE_URL || "http://localhost:8000"}/feedback/exam`,
