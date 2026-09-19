@@ -229,7 +229,7 @@ const submitExam = async (req, res, next) => {
           `${process.env.AI_SERVICE_URL || "http://localhost:8000"}/feedback/exam`,
           {
             score,
-            totalMarks,
+            total_marks: totalMarks,
             percentage: attempt.percentage,
             answers: attempt.answers,
             questions,
